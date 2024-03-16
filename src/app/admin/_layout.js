@@ -2,6 +2,7 @@ import { Redirect, Stack } from 'expo-router';
 import { useSession } from '../../ctx';
 import { Text } from 'react-native';
 import { jwtDecode } from "jwt-decode";
+import "core-js/stable/atob";
 
 export default function AppLayout() {
   

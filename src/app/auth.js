@@ -5,12 +5,18 @@ import AuthService from './services/authService';
 import { useSession } from '../ctx';
 import { router } from 'expo-router';
 import { jwtDecode } from "jwt-decode";
+import "core-js/stable/atob";
+import loggedUserRedirection from "./utils/loggedUserRedirection";
 
 const LoginScreen = () => {
+  const { isLoading, session } = useSession();
+  const redirect = loggedUserRedirection(isLoading, session);
+  if (redirect ) return redirect;
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { signIn } = useSession();
-  // Platforma özel sınıf isimlerini belirleyerek responsive tasarım sağlıyoruz
+
   const containerStyle = "flex-1 justify-center items-center p-4";
   const inputStyle = "border rounded w-full md:w-1/2 lg:w-1/3 p-2 mb-4";
   const buttonStyle = "bg-primary p-3 rounded w-full md:w-1/2 lg:w-1/3 items-center";
@@ -22,9 +28,7 @@ const LoginScreen = () => {
     authService.login(username, password)
       .then((response) => {
         signIn(response.data.token);
-        //tokeni parse et, eğer role değeri adminse admin sayfasına yönlendir
         const decoded = jwtDecode(response.data.token);
-        console.log(decoded.role.replace("_","-").toLowerCase());
         router.replace("/"+decoded.role.replace("_","-").toLowerCase());
       })
       .catch((error) => {
