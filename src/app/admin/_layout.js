@@ -1,12 +1,13 @@
-import { Redirect, Stack } from 'expo-router';
-import { useSession } from '../../ctx';
-import { Text } from 'react-native';
+import { Redirect } from "expo-router";
+import { useSession } from "../../ctx";
+import { Text } from "react-native";
 import { jwtDecode } from "jwt-decode";
 import "core-js/stable/atob";
+import GenericStack from "../GenericStack";
 
 export default function AppLayout() {
-  
-  const {isLoading, session} = useSession();
+  const { signOut } = useSession();
+  const { isLoading, session } = useSession();
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isLoading) {
     return <Text>Loading...</Text>;
@@ -25,6 +26,18 @@ export default function AppLayout() {
     return <Redirect href="/auth" />;
   }
 
+  // if (Platform.OS === 'web') {
+  //   return (
+  //     <View style={{ flex: 1 }}>
+  //       <View style={{ height: 60, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, backgroundColor: '#f0f0f0' }}>
+  //         <Text>Admin</Text>
+  //         <Pressable onPress={() => signOut()}>
+  //           <Text>Sign Out</Text>
+  //         </Pressable>
+  //       </View>
+  //     </View>
+  //   );
+  // }
   // This layout can be deferred because it's not the root layout.
-  return <Stack />;
+  return <GenericStack path="/admin" />;
 }

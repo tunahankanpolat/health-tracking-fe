@@ -1,8 +1,9 @@
-import { Redirect, Stack } from 'expo-router';
+import { Redirect } from 'expo-router';
 import { useSession } from '../../ctx';
 import { Text } from 'react-native';
 import { jwtDecode } from "jwt-decode";
 import "core-js/stable/atob";
+import GenericStack from "../GenericStack";
 
 export default function AppLayout() {
   
@@ -26,5 +27,6 @@ export default function AppLayout() {
   }
 
   // This layout can be deferred because it's not the root layout.
-  return <Stack />;
+  return <GenericStack path="/patient-relative" />;
+
 }
