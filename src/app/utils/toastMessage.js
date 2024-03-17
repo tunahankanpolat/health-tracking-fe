@@ -3,6 +3,9 @@ import Toast from 'react-native-root-toast';
 import { toast } from 'react-toastify';
 
 export default function toastMessage(type, message) {
+      if (Object.prototype.toString.call(message) == '[object Array]') {
+            message = message[0];
+      }
       if (Platform.OS === "web") {
             switch (type) {
             case "success":
@@ -73,8 +76,4 @@ export default function toastMessage(type, message) {
                   });
             }
       }
-      
-  return (
-    <div>toastMessage</div>
-  )
 }

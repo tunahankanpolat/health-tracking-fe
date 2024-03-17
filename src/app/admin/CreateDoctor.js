@@ -27,8 +27,8 @@ const handleCreation = (token, values) => {
     toastMessage('success', response.data);
   }
   ).catch((error) => {
-    console.log(error.response.data);
-    toastMessage('error', error.response.data.message.toString());
+    console.log(error.response.data.message);
+    toastMessage('error', error.response.data.message);
   }
   );
 }
