@@ -8,6 +8,7 @@ module.exports = {
         secondary: '#4d4d4d', // Koyu Gri
         accent: '#ff7f50', // Mercan
         background: '#f0f0f0', // Açık Gri
+        card: '#eeeeee'
       },
     },
   },
