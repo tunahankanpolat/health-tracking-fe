@@ -9,20 +9,19 @@ import DoctorService from '../services/doctorService';
 import { useSession } from '../../ctx';
 // Form doğrulama şeması
 const DoctorSchema = Yup.object().shape({
-  name: Yup.string().required('Name is required'),
-  surname: Yup.string().required('Surname is required'),
-  username: Yup.string().required('Username is required'),
-  password: Yup.string().required('Password is required'),
-  specialization: Yup.string().required('Specialization is required'),
-  phoneNumber: Yup.string(),
+  name: Yup.string().required('Name is required').min(3, 'Name must be between 3 and 20 characters long').max(20, 'Name must be between 3 and 20 characters long'),
+  surname: Yup.string().required('Surname is required').min(3, 'Surname must be between 3 and 20 characters long').max(20, 'Surname must be between 3 and 20 characters long'),
+  username: Yup.string().required('Username is required').min(3, 'Username must be between 3 and 20 characters long').max(20, 'Username must be between 3 and 20 characters long'),
+  password: Yup.string().required('Password is required').min(3, 'Password must be between 3 and 20 characters long').max(20, 'Password must be between 3 and 20 characters long'),
+  specialization: Yup.string().required('Specialization is required').min(3, 'Specialization must be between 3 and 20 characters long').max(20, 'Specialization must be between 3 and 20 characters long'),
+  phoneNumber: Yup.string().required('Phone number is required').min(11, 'Phone number must be between 11 and 11 characters long').max(11, 'Phone number must be between 11 and 11 characters long'),
   emailAddress: Yup.string().email('Invalid email'),
   address: Yup.string(),
 });
 
 const handleCreation = (token, values) => {
   let doctorService = new DoctorService();
-  console.log(token);
-  console.log(values);
+  Object.keys(values).forEach(key => values[key] === "" && delete values[key]);
   doctorService.createDoctor(token, values).then((response) => {
     toastMessage('success', response.data);
   }
