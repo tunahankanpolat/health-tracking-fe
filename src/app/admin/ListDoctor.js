@@ -43,7 +43,7 @@ const DoctorsList = () => {
   return (
       <FlatList
         data={currentDoctors}
-        className="px-80 py-2 android:p-2 rounded-lg"
+        className="px-80 py-2 android:p-2 ios:p-2 rounded-lg"
         renderItem={({ item }) => <DoctorItem doctor={item} />}
         keyExtractor={item => item.id.toString()}
         ListFooterComponent={() => (

@@ -7,6 +7,7 @@ import { router } from 'expo-router';
 import { jwtDecode } from "jwt-decode";
 import "core-js/stable/atob";
 import loggedUserRedirection from "./utils/loggedUserRedirection";
+import toastMessage from "./utils/toastMessage";
 
 const LoginScreen = () => {
   const { isLoading, session } = useSession();
@@ -32,7 +33,7 @@ const LoginScreen = () => {
         router.replace("/"+decoded.role.replace("_","-").toLowerCase());
       })
       .catch((error) => {
-        console.log(error);
+        toastMessage('error', error.response.data.message);
       });
   }
 

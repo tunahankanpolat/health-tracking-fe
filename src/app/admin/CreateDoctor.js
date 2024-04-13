@@ -2,12 +2,10 @@ import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { View, TextInput, Text, Pressable } from 'react-native';
-import Toast from 'react-native-root-toast';
-import { toast } from 'react-toastify';
 import toastMessage from '../utils/toastMessage';
 import DoctorService from '../services/doctorService';
 import { useSession } from '../../ctx';
-// Form doğrulama şeması
+
 const DoctorSchema = Yup.object().shape({
   name: Yup.string().required('Name is required').min(3, 'Name must be between 3 and 20 characters long').max(20, 'Name must be between 3 and 20 characters long'),
   surname: Yup.string().required('Surname is required').min(3, 'Surname must be between 3 and 20 characters long').max(20, 'Surname must be between 3 and 20 characters long'),
@@ -51,7 +49,7 @@ const CreateDoctorForm = () => {
       onSubmit={(values) => handleCreation(session, values)}
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-        <View className="p-4 mx-80 android:mx-2">
+        <View className="p-4 mx-80 android:mx-2 ios:mx-2">
           {Object.keys(values).map((key) => (
             <View key={key} className="mb-4">
               <TextInput

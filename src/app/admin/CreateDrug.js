@@ -38,7 +38,7 @@ const CreateDrugForm = () => {
       onSubmit={(values) => handleCreation(session.token, values)} // Assuming session contains a token property
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-        <View className="p-4 mx-80 android:mx-2">
+        <View className="p-4 mx-80 android:mx-2 ios:mx-2">
           {Object.keys(values).map((key) => (
             <View key={key} className="mb-4">
               <TextInput

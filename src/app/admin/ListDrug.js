@@ -45,7 +45,7 @@ const DrugList = () => {
   return (
     <FlatList
       data={currentDrugs}
-      className="px-80 py-2 android:p-2 rounded-lg"
+      className="px-80 py-2 android:p-2 ios:p-2 rounded-lg"
       renderItem={({ item }) => <DrugItem drug={item} />}
       keyExtractor={(item) => item.id}
       ListFooterComponent={() => (
