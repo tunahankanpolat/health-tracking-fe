@@ -14,23 +14,47 @@ import DoctorService from "../services/doctorService";
 import DrugService from "../services/drugService";
 import CreatePrescriptionModal from "../components/CreatePrescriptionModal";
 import ShowPrescriptionModal from "../components/ShowPrescriptionModal";
+import ShowHealthDataModal from "../components/ShowHealthDataModal";
+import PatientService from "../services/patientService";
+import AwsLambdaService from "../services/awsLambdaService";
 
 const PatientItem = ({ patient, session, drugList }) => {
-  const [createPrescriptionModalVisible, setCreatePrescriptionModalVisible] = useState(false);
-  const [showPrescriptionModalVisible, setShowPrescriptionModalVisible] = useState(false);
+  const [createPrescriptionModalVisible, setCreatePrescriptionModalVisible] =
+    useState(false);
+  const [showPrescriptionModalVisible, setShowPrescriptionModalVisible] =
+    useState(false);
+  const [showHealthDataModalVisible, setShowHealthDataModalVisible] =
+    useState(false);
+  const [prescriptions, setPrescriptions] = useState([]);
+  const [healthData, setHealthData] = useState([]);
 
   const handleShowDrugUsage = () => {
     // Delete patient logic
   };
 
-  const handleShowPrescription = () => {
-    // Show prescription logic
+  const handleShowPrescription = async () => {
+    if (prescriptions.length === 0) await getPatientPrescriptions();
+    setShowPrescriptionModalVisible(true);
   };
 
-  const handleShowHealthData = () => {
-    // Show health data logic
+  const handleShowHealthData = async () => {
+    if (healthData.length === 0) await getPatientHealthData();
+    setShowHealthDataModalVisible(true);
   };
 
+  const getPatientHealthData = async () => {
+    const awsLambdaService = new AwsLambdaService();
+    awsLambdaService.getHealthData(patient.id).then((response) => {
+      setHealthData(response.data);
+    });
+  };
+
+  const getPatientPrescriptions = async () => {
+    const patientService = new PatientService();
+    patientService.getPrescriptions(session, patient.id).then((response) => {
+      setPrescriptions(response.data);
+    });
+  };
   return (
     <View className="border border-gray-300 rounded-lg p-4 mb-4 bg-card">
       <Text className="text-lg font-semibold">
@@ -66,7 +90,7 @@ const PatientItem = ({ patient, session, drugList }) => {
 
       <View className="absolute top-0 right-0 mt-2 mr-2">
         <Pressable
-          onPress={() => setShowPrescriptionModalVisible(true)}
+          onPress={() => handleShowPrescription()}
           className="bg-primary p-2 rounded-lg m-1"
         >
           <Text className="text-white">Show Prescriptions</Text>
@@ -90,8 +114,23 @@ const PatientItem = ({ patient, session, drugList }) => {
           <Text className="text-white">Show Health Data</Text>
         </Pressable>
       </View>
-      <CreatePrescriptionModal drugList={drugList} setModalVisible={setCreatePrescriptionModalVisible} modalVisible={createPrescriptionModalVisible} patientId={patient.id} session={session}/>
-      <ShowPrescriptionModal setModalVisible={setShowPrescriptionModalVisible} modalVisible={showPrescriptionModalVisible} patientId={patient.id} session={session}/>
+      <CreatePrescriptionModal
+        drugList={drugList}
+        setModalVisible={setCreatePrescriptionModalVisible}
+        modalVisible={createPrescriptionModalVisible}
+        patientId={patient.id}
+        session={session}
+      />
+      <ShowPrescriptionModal
+        setModalVisible={setShowPrescriptionModalVisible}
+        modalVisible={showPrescriptionModalVisible}
+        prescriptions={prescriptions}
+      />
+      <ShowHealthDataModal
+        setModalVisible={setShowHealthDataModalVisible}
+        modalVisible={showHealthDataModalVisible}
+        healthData={healthData}
+      />
     </View>
   );
 };
@@ -133,7 +172,9 @@ const PatientsList = () => {
     <FlatList
       data={currentPatients}
       className="px-80 py-2 android:p-2 ios:p-2 rounded-lg"
-      renderItem={({ item }) => <PatientItem patient={item} session={session} drugList={drugList}/>}
+      renderItem={({ item }) => (
+        <PatientItem patient={item} session={session} drugList={drugList} />
+      )}
       keyExtractor={(item) => item.id.toString()}
       ListFooterComponent={() => (
         <View className="flex-row justify-center mb-4">

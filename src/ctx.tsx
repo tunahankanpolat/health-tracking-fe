@@ -4,11 +4,15 @@ import { useStorageState } from './useStorageState';
 const AuthContext = React.createContext<{
   signIn: (token) => void;
   signOut: () => void;
+  setIsAuthorized: (authorized: boolean) => void;
+  isAuthorized: boolean;
   session?: string | null;
   isLoading: boolean;
 }>({
   signIn: () => null,
   signOut: () => null,
+  setIsAuthorized: () => null,
+  isAuthorized: false,
   session: null,
   isLoading: false,
 });
@@ -26,7 +30,7 @@ export function useSession() {
 
 export function SessionProvider(props: React.PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState('session');
-
+  const [[, authorized], setAuthorized] = useStorageState('authorized');
   return (
     <AuthContext.Provider
       value={{
@@ -37,6 +41,10 @@ export function SessionProvider(props: React.PropsWithChildren) {
         signOut: () => {
           setSession(null);
         },
+        setIsAuthorized: (authorized: boolean) => {
+          setAuthorized(authorized ? 'authorized' : null);
+        },
+        isAuthorized: !!authorized,
         session,
         isLoading,
       }}>
