@@ -21,4 +21,13 @@ export default class PatientService {
             },
         });
     }
+    async createRelative(token, patientrelative) {
+        console.log(patientrelative);
+        console.log(token);
+        return await axios.post(process.env.EXPO_PUBLIC_CREATE_PATIENT_RELATIVE_URL, patientrelative, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+    }
 }

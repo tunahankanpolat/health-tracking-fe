@@ -34,19 +34,16 @@ export default function GoogleFitAccessButton({
       access_type: "offline",
     },
   });
-  console.log("request", request);
 
   useEffect(() => {
     getAutorizedCode();
   }, [response]);
 
   const getAutorizedCode = () => {
-    console.log("response", response);
     if (response?.type === "success") {
       toastMessage("success", "Google Fit Access Granted");
       const { code, state, scope, prompt } = response.params;
       const userId = getUserIdFromSession();
-      console.log("codeVerifier1", request.codeVerifier);
       postAuthorizedCode(
         code,
         userId,
@@ -74,7 +71,6 @@ export default function GoogleFitAccessButton({
     redirectUri
   ) => {
     const awsLambdaService = new AwsLambdaService();
-    console.log("codeVerifier2", codeVerifier);
     try {
       awsLambdaService.postAuthorizedCode(
         authorizedCode,

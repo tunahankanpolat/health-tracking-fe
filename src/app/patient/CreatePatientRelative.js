@@ -3,10 +3,11 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { View, TextInput, Text, Pressable } from "react-native";
 import toastMessage from "../utils/toastMessage";
-import DoctorService from "../services/doctorService";
+import PatientService from "../services/patientService"; // PatientService import edildi.
 import { useSession } from "../../ctx";
 
-const DoctorSchema = Yup.object().shape({
+// Form doğrulama şeması
+const PatientRelativeSchema = Yup.object().shape({
   name: Yup.string()
     .required("Name is required")
     .min(3, "Name must be between 3 and 20 characters long")
@@ -23,35 +24,37 @@ const DoctorSchema = Yup.object().shape({
     .required("Password is required")
     .min(3, "Password must be between 3 and 20 characters long")
     .max(20, "Password must be between 3 and 20 characters long"),
-  specialization: Yup.string()
-    .required("Specialization is required")
-    .min(3, "Specialization must be between 3 and 20 characters long")
-    .max(20, "Specialization must be between 3 and 20 characters long"),
   phoneNumber: Yup.string()
     .required("Phone number is required")
     .min(11, "Phone number must be between 11 and 11 characters long")
     .max(11, "Phone number must be between 11 and 11 characters long"),
   emailAddress: Yup.string().email("Invalid email"),
-  address: Yup.string(),
+  address: Yup.string()
+    .required("Address is required")
+    .min(3, "Address must be between 3 and 200 characters long")
+    .max(200, "Address must be between 3 and 200 characters long"),
+  relationship: Yup.string().required("Relationship is required")
+  .min(3, "Relationship must be between 3 and 20 characters long")
+  .max(20, "Relationship must be between 3 and 20 characters long")
 });
 
 const handleCreation = (token, values) => {
-  let doctorService = new DoctorService();
-  Object.keys(values).forEach(
-    (key) => values[key] === "" && delete values[key]
-  );
-  doctorService
-    .createDoctor(token, values)
+  let patientService = new PatientService(); // PatientService nesnesi oluşturuldu.
+  console.log(values);
+  console.log(token);
+  patientService
+    .createRelative(token, values)
     .then((response) => {
+      console.log(response.data);
       toastMessage("success", response.data);
     })
     .catch((error) => {
-      console.log(error.response.data.message);
+      console.log(error.response.data);
       toastMessage("error", error.response.data.message);
     });
 };
 
-const CreateDoctorForm = () => {
+const CreatePatientRelativeForm = () => {
   const { isLoading, session } = useSession();
   if (isLoading) return null;
   return (
@@ -61,12 +64,12 @@ const CreateDoctorForm = () => {
         surname: "",
         username: "",
         password: "",
-        specialization: "",
         phoneNumber: "",
         emailAddress: "",
         address: "",
+        relationship: "",
       }}
-      validationSchema={DoctorSchema}
+      validationSchema={PatientRelativeSchema}
       onSubmit={(values) => handleCreation(session, values)}
     >
       {({
@@ -105,4 +108,4 @@ const CreateDoctorForm = () => {
   );
 };
 
-export default CreateDoctorForm;
+export default CreatePatientRelativeForm;
