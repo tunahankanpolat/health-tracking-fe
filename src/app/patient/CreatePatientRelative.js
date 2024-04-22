@@ -33,9 +33,10 @@ const PatientRelativeSchema = Yup.object().shape({
     .required("Address is required")
     .min(3, "Address must be between 3 and 200 characters long")
     .max(200, "Address must be between 3 and 200 characters long"),
-  relationship: Yup.string().required("Relationship is required")
-  .min(3, "Relationship must be between 3 and 20 characters long")
-  .max(20, "Relationship must be between 3 and 20 characters long")
+  relationship: Yup.string()
+    .required("Relationship is required")
+    .min(3, "Relationship must be between 3 and 20 characters long")
+    .max(20, "Relationship must be between 3 and 20 characters long"),
 });
 
 const handleCreation = (token, values) => {

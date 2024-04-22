@@ -1,10 +1,9 @@
-
-import { useEffect, useState } from 'react';
-import { View } from 'react-native';
-import PatientRelativeService from '../services/patientReletiveService';
-import AwsLambdaService from '../services/awsLambdaService';
-import CustomLineChart from '../utils/CustomLineChart';
-import { useSession } from '../../ctx';
+import { useEffect, useState } from "react";
+import { View } from "react-native";
+import PatientRelativeService from "../services/patientReletiveService";
+import AwsLambdaService from "../services/awsLambdaService";
+import CustomLineChart from "../utils/CustomLineChart";
+import { useSession } from "../../ctx";
 
 export default function Page() {
   const { session, isLoading } = useSession();
@@ -12,7 +11,6 @@ export default function Page() {
   const [healthData, setHealthData] = useState([]);
   useEffect(() => {
     let patientId;
-    console.log(session);
     const patientRelativeService = new PatientRelativeService();
     patientRelativeService.getPatientId(session).then((response) => {
       patientId = response.data;

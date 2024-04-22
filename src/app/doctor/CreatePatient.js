@@ -1,14 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import {
-  View,
-  TextInput,
-  Text,
-  Pressable,
-  ScrollView,
-  Platform,
-} from "react-native";
+import { View, TextInput, Text, Pressable, ScrollView } from "react-native";
 import toastMessage from "../utils/toastMessage";
 import PatientService from "../services/patientService";
 import { useSession } from "../../ctx";

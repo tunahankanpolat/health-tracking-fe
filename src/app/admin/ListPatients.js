@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ScrollView, Pressable, FlatList } from "react-native";
+import { View, Text, Pressable, FlatList } from "react-native";
 import { useSession } from "../../ctx";
 import PatientService from "../services/patientService";
 

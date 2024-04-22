@@ -1,4 +1,3 @@
-import { Text, Pressable } from "react-native";
 import React, { useState, useEffect } from "react";
 import { View } from "react-native";
 import GoogleFitAccessButton from "../components/GoogleFitAccessButton"; // GoogleSignInButton'ın doğru kütüphane yolunu ekleyin

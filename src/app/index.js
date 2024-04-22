@@ -8,7 +8,7 @@ import { useSession } from "../ctx";
 export default function Page() {
   const { isLoading, session } = useSession();
   const redirect = loggedUserRedirection(isLoading, session);
-  if (redirect ) return redirect;
+  if (redirect) return redirect;
   return (
     <View className="flex flex-1">
       <Content />

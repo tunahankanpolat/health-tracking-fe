@@ -1,5 +1,4 @@
-
-import { Text } from 'react-native';
+import { Text } from "react-native";
 
 export default function Page() {
   return <Text>ADMIN</Text>;

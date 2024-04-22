@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Picker } from "@react-native-picker/picker";
 import {
   View,
   Text,
-  ScrollView,
   Pressable,
   FlatList,
-  Modal,
-  TextInput,
 } from "react-native";
 import { useSession } from "../../ctx";
 import DoctorService from "../services/doctorService";

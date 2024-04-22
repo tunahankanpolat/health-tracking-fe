@@ -1,8 +1,4 @@
-import { View, Modal, Text, TouchableOpacity, Pressable } from "react-native";
-import { useEffect, useState } from "react";
-import { LineChart } from "react-native-chart-kit";
-import { Dimensions } from "react-native";
-import { Platform } from "react-native";
+import { View, Modal, Text, Pressable } from "react-native";
 import CustomLineChart from "../utils/CustomLineChart";
 
 export default function ShowPrescriptionModal(props) {

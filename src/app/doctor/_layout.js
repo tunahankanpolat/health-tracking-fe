@@ -1,13 +1,11 @@
-import { Redirect } from 'expo-router';
-import { useSession } from '../../ctx';
-import { Text } from 'react-native';
+import { Redirect } from "expo-router";
+import { useSession } from "../../ctx";
 import { jwtDecode } from "jwt-decode";
 import "core-js/stable/atob";
 import GenericStack from "../GenericStack";
 
 export default function AppLayout() {
-  
-  const {isLoading, session} = useSession();
+  const { isLoading, session } = useSession();
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isLoading) return null;
 

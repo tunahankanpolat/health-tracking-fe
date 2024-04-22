@@ -1,8 +1,4 @@
-//web client id: 95257513350-h65r6h5g6gpgjlujak87ulldrl3tknjf.apps.googleusercontent.com
-//web client secret: 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
-//android: 95257513350-al7els8e4558f626n21rq6ncfcggd20p.apps.googleusercontent.com
-//ios: 95257513350-bi9mlkn4cstevc6ls6vpds5la1962n96.apps.googleusercontent.com
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Platform, Pressable, Text, View } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";

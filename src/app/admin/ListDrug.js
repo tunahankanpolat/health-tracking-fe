@@ -6,9 +6,9 @@ import DrugService from "../services/drugService";
 const DrugItem = ({ drug }) => (
   <View className="border border-gray-300 rounded-lg p-4 bg-card mb-4">
     <Text className="text-2xl font-bold">{drug.name}</Text>
-    <View style={{flex: 1}}>
-      <View className="flex-row border-b border-gray-300"/>
-</View>
+    <View style={{ flex: 1 }}>
+      <View className="flex-row border-b border-gray-300" />
+    </View>
 
     <Text className="text-xl font-medium my-4">Description: </Text>
     <Text className="text-sm text-gray-600">{drug.description}</Text>

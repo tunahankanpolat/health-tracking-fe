@@ -1,4 +1,3 @@
-import { Picker } from "@react-native-picker/picker";
 import RNPickerSelect from "react-native-picker-select";
 import {
   View,
@@ -10,12 +9,10 @@ import {
   Platform,
 } from "react-native";
 import CustomDatePicker from "../utils/CustomDatePicker";
-import DrugService from "../services/drugService";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import PrescriptionService from "../services/prescriptionService";
-import { useSession } from "../../ctx";
-import toastMessage from '../utils/toastMessage';
+import toastMessage from "../utils/toastMessage";
 
 export default function CreatePrescriptionModal(props) {
   const { modalVisible, setModalVisible, patientId, session, drugList } = props;
@@ -28,15 +25,15 @@ export default function CreatePrescriptionModal(props) {
   const [frequency, setFrequency] = useState("");
 
   const handleClose = () => {
-      setPrescriptionDate(new Date());
-      setExpiryDate(new Date());
-      setInstructions("");
-      setSelectedDrugUsages([]);
-      setDrugId("");
-      setDosage("");
-      setFrequency("");
-      setModalVisible(false);
-      };
+    setPrescriptionDate(new Date());
+    setExpiryDate(new Date());
+    setInstructions("");
+    setSelectedDrugUsages([]);
+    setDrugId("");
+    setDosage("");
+    setFrequency("");
+    setModalVisible(false);
+  };
 
   const handleCreatePrescription = (patientId, selectedDrugUsages, token) => {
     const drugUsages = selectedDrugUsages.map((drugUsage) => ({
@@ -59,17 +56,15 @@ export default function CreatePrescriptionModal(props) {
     prescriptionService
       .createPrescription(token, prescription)
       .then((response) => {
-            console.log("response", response);
-            handleClose();
+        console.log("response", response);
+        handleClose();
         toastMessage("success", response.data);
       })
       .catch((error) => {
-            console.log("error", error.response.data.message);
+        console.log("error", error.response.data.message);
         toastMessage("error", error.response.data.message);
       });
   };
-
-
 
   const handleAddDrugUsage = (drugId, dosage, frequency) => {
     const selectedDrug = drugList.find((drug) => drug.id == drugId);
@@ -101,7 +96,11 @@ export default function CreatePrescriptionModal(props) {
   };
 
   return (
-    <Modal visible={modalVisible} onRequestClose={() => handleClose()}  transparent={true}>
+    <Modal
+      visible={modalVisible}
+      onRequestClose={() => handleClose()}
+      transparent={true}
+    >
       <View className="flex-1 rounded-xl justify-center items-center gap-y-2 m-2 bg-white my-20 mx-auto android:mx-0 ios:mx-0 p-2">
         <Text className="text-lg font-semibold mb-4">Create Prescription</Text>
         <CustomDatePicker
