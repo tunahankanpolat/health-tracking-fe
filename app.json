@@ -20,7 +20,9 @@
       "infoPlist": {
         "CFBundleURLTypes": [
           {
-            "CFBundleURLSchemes": ["com.googleusercontent.apps.95257513350-bi9mlkn4cstevc6ls6vpds5la1962n96"]
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.95257513350-bi9mlkn4cstevc6ls6vpds5la1962n96"
+            ]
           }
         ]
       }
@@ -31,7 +33,9 @@
         "backgroundColor": "#ffffff"
       },
       "package": "health.tracking.frontend",
-      "permissions": ["BODY_SENSORS"]
+      "permissions": [
+        "BODY_SENSORS"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -46,7 +50,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "b6b27bd4-9a5f-4a1c-bf3b-35835835c379"
+        "projectId": "e2375eaf-43c2-40fe-bc55-1d661ddc7995"
       }
     }
   }
