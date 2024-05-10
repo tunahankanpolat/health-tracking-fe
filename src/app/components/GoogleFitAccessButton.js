@@ -96,7 +96,7 @@ export default function GoogleFitAccessButton({
 
   return (
     !isAuthorized && (
-      <View className="flex-1 justify-end items-center h-full m-2 p-2 w-full bg-background">
+      <View className="flex-1 justify-end items-center h-full p-2 w-full bg-background">
         <Pressable
           onPress={() => promptAsync()}
           className="bg-primary px-5 py-2 rounded-lg flex-row items-center w-full justify-center"
