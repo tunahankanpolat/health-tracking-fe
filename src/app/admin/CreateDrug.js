@@ -31,6 +31,8 @@ const handleCreation = (token, values) => {
     .createDrug(token, values)
     .then((response) => {
       toastMessage("success", response.data);
+      // Yeni doktor eklendikten sonra sayfanın yeniden yüklenmesi için bir işlem yapılabilir.
+      window.location.reload(); // Sayfanın yeniden yüklenmesi
     })
     .catch((error) => {
       console.log(error.response.data.message);
