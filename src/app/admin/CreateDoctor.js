@@ -29,21 +29,26 @@ const DoctorSchema = Yup.object().shape({
     .max(20, "Specialization must be between 3 and 20 characters long"),
   phoneNumber: Yup.string()
     .required("Phone number is required")
-    .min(11, "Phone number must be between 11 and 11 characters long")
-    .max(11, "Phone number must be between 11 and 11 characters long"),
+    .matches(/^[0-9]+$/, "Phone number must contain only digits") //Eklendi
+    .min(11, "Phone number must be exactly 11 characters long")
+    .max(11, "Phone number must be exactly 11 characters long"),
   emailAddress: Yup.string().email("Invalid email"),
   address: Yup.string(),
 });
 
 const handleCreation = (token, values) => {
   let doctorService = new DoctorService();
-  Object.keys(values).forEach(
+  /*Object.keys(values).forEach(
     (key) => values[key] === "" && delete values[key]
-  );
+  );*/
+  console.log(values);
+  console.log(token);
   doctorService
     .createDoctor(token, values)
     .then((response) => {
       toastMessage("success", response.data);
+      // Yeni doktor eklendikten sonra sayfanın yeniden yüklenmesi için bir işlem yapılabilir.
+      window.location.reload(); // Sayfanın yeniden yüklenmesi
     })
     .catch((error) => {
       console.log(error.response.data.message);
