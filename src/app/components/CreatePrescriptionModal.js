@@ -67,11 +67,12 @@ export default function CreatePrescriptionModal(props) {
   };
 
   const handleAddDrugUsage = (drugId, dosage, frequency) => {
-    const selectedDrug = drugList.find((drug) => drug.id == drugId);
+    const selectedDrug = drugList.find((drug) => drug.name == drugId);
+    console.log(selectedDrug);
     const selectedDrugUsage = {
       id: selectedDrugUsages.length + 1,
       name: selectedDrug.name,
-      drugId: drugId,
+      drugId: selectedDrug.id,
       dosage: dosage,
       frequency: frequency,
     };

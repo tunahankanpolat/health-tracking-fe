@@ -5,12 +5,19 @@ import "core-js/stable/atob";
 import GenericStack from "../GenericStack";
 
 export default function AppLayout() {
-  const { isLoading, session } = useSession();
+  const { isLoading, session, signOut } = useSession();
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isLoading) return null;
   let decoded;
   try {
     decoded = jwtDecode(session);
+    if (decoded.role !== process.env.EXPO_PUBLIC_ROLE_PATIENT) {
+      return <Redirect href="/auth" />;
+    }
+    if (decoded.exp < Date.now() / 1000) {
+      signOut();
+      return <Redirect href="/auth" />;
+    }
   } catch (e) {
     return <Redirect href="/auth" />;
   }
@@ -21,7 +28,6 @@ export default function AppLayout() {
     // in the headless Node process that the pages are rendered in.
     return <Redirect href="/auth" />;
   }
-
   // This layout can be deferred because it's not the root layout.
   return <GenericStack path="/patient" />;
 }

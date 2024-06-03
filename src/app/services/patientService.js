@@ -20,13 +20,19 @@ export default class PatientService {
   }
   async getPrescriptions(token, patientId) {
     return await axios.get(
-      `${process.env.EXPO_PUBLIC_GET_ALL_PATIENT_URL}/${patientId}/prescriptions`,
-      {
+      `${process.env.EXPO_PUBLIC_GET_ALL_PATIENT_URL}/${patientId}/prescriptions`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
-    );
+      });
+  }
+  async getDrugUsages(token, patientId) {
+    return await axios.get(
+      `${process.env.EXPO_PUBLIC_GET_ALL_PATIENT_URL}/${patientId}/drug-usages`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
   }
   async createRelative(token, patientrelative) {
     console.log(patientrelative);

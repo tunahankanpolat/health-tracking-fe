@@ -11,6 +11,13 @@ export default function AppLayout() {
   let decoded;
   try {
     decoded = jwtDecode(session);
+    if (decoded.role !== process.env.EXPO_PUBLIC_ROLE_ADMIN) {
+      return <Redirect href="/auth" />;
+    }
+    if (decoded.exp < Date.now() / 1000) {
+      signOut();
+      return <Redirect href="/auth" />;
+    }
   } catch (e) {
     return <Redirect href="/auth" />;
   }

@@ -43,4 +43,18 @@ export default class AwsLambdaService {
       }
     );
   }
+
+  async setDrugSchedule(userId, drugSchedule) {
+    return await axios.post(
+      process.env.EXPO_PUBLIC_SET_DRUG_SCHEDULE_URL,
+      {
+        user_id: 4,
+        drug_schedule: drugSchedule,
+      },
+      {
+        ACCESS_CONTROL_ALLOW_ORIGIN:
+          "https://bqv3mvxf35gnesdyiwsmmh3tfy0mcyor.lambda-url.eu-west-1.on.aws",
+      }
+    );
+  }
 }
