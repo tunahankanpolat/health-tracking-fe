@@ -15,7 +15,7 @@ import PrescriptionService from "../services/prescriptionService";
 import toastMessage from "../utils/toastMessage";
 
 export default function CreatePrescriptionModal(props) {
-  const { modalVisible, setModalVisible, patientId, session, drugList } = props;
+  const { modalVisible, setModalVisible, patientId, session, drugList, prescriptionList } = props;
   const [prescriptionDate, setPrescriptionDate] = useState(new Date());
   const [expiryDate, setExpiryDate] = useState(new Date());
   const [instructions, setInstructions] = useState("");
@@ -59,6 +59,7 @@ export default function CreatePrescriptionModal(props) {
         console.log("response", response);
         handleClose();
         toastMessage("success", response.data);
+        window.location.reload(); // Sayfanın yeniden yüklenmesi
       })
       .catch((error) => {
         console.log("error", error.response.data.message);

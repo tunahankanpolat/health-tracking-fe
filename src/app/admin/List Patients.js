@@ -6,7 +6,6 @@ import {
   FlatList,
 } from "react-native";
 import { useSession } from "../../ctx";
-import DoctorService from "../services/doctorService";
 import DrugService from "../services/drugService";
 import CreatePrescriptionModal from "../components/CreatePrescriptionModal";
 import ShowPrescriptionModal from "../components/ShowPrescriptionModal";
@@ -92,18 +91,6 @@ const PatientItem = ({ patient, session, drugList }) => {
           <Text className="text-white">Show Prescriptions</Text>
         </Pressable>
         <Pressable
-          onPress={() => setCreatePrescriptionModalVisible(true)}
-          className="bg-primary p-2 rounded-lg m-1"
-        >
-          <Text className="text-white">Create Prescription</Text>
-        </Pressable>
-        <Pressable
-          onPress={handleShowDrugUsage}
-          className="bg-primary p-2 rounded-lg m-1"
-        >
-          <Text className="text-white">Show Drug Usage</Text>
-        </Pressable>
-        <Pressable
           onPress={handleShowHealthData}
           className="bg-primary p-2 rounded-lg m-1"
         >
@@ -144,9 +131,9 @@ const PatientsList = () => {
     drugService.getAllDrugs().then((response) => {
       setDrugList(response.data);
     });
-    const doctorService = new DoctorService();
-    doctorService
-      .getPatients(session)
+    const patientService = new PatientService();
+    patientService
+      .getAllPatients(session)
       .then((response) => {
         setPatients(response.data);
       })

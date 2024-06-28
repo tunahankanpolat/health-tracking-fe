@@ -1,7 +1,14 @@
 import React from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { View, TextInput, Text, Pressable, ScrollView, VirtualizedList } from "react-native";
+import {
+  View,
+  TextInput,
+  Text,
+  Pressable,
+  ScrollView,
+  VirtualizedList,
+} from "react-native";
 import toastMessage from "../utils/toastMessage";
 import PatientService from "../services/patientService";
 import { useSession } from "../../ctx";
@@ -33,9 +40,7 @@ const PatientSchema = Yup.object().shape({
     .matches(/^[a-zA-Z]+$/, "Gender must contain only letters"), //Eklendi
   height: Yup.number().positive("Height must be positive"),
   weight: Yup.number().positive("Weight must be positive"),
-  bloodType: Yup.string()
-    .required("Blood type is required"),
-  rfidTag: Yup.string(),
+  bloodType: Yup.string().required("Blood type is required"),
   phoneNumber: Yup.string()
     .required("Phone number is required")
     .matches(/^[0-9]+$/, "Phone number must contain only digits") //Eklendi
@@ -48,19 +53,18 @@ const PatientSchema = Yup.object().shape({
     .max(200, "Address must be between 3 and 200 characters long"),
 });
 
-const handleCreation = (token, values) => {
+const handleCreation = (token, values, resetForm) => {
   let patientService = new PatientService();
-  /*Object.keys(values).forEach(
-    (key) => values[key] === "" && delete values[key]
-  );*/
+
   console.log(values);
   console.log(token);
   patientService
     .createPatient(token, values)
     .then((response) => {
       toastMessage("success", response.data);
+      resetForm();
       // Yeni doktor eklendikten sonra sayfanın yeniden yüklenmesi için bir işlem yapılabilir.
-      window.location.reload(); // Sayfanın yeniden yüklenmesi
+      //window.location.reload(); // Sayfanın yeniden yüklenmesi
     })
     .catch((error) => {
       console.log(error.response.data.message);
@@ -89,13 +93,12 @@ const CreatePatientForm = () => {
           height: "",
           weight: "",
           bloodType: "",
-          rfidTag: "",
           phoneNumber: "",
           emailAddress: "",
           address: "",
         }}
         validationSchema={PatientSchema}
-        onSubmit={(values) => handleCreation(session, values)}
+        onSubmit={(values, { resetForm }) => handleCreation(session, values, resetForm)}
       >
         {({
           handleChange,
@@ -119,8 +122,16 @@ const CreatePatientForm = () => {
                     fieldName="Birth Date"
                   />
                 ) : key === "gender" ? (
-                  <View className="flex-1 border border-gray-300 rounded-lg text-lg justify-center">
+                  <View className="flex-1 border border-gray-300 rounded-lg text-lg justify-center p-2">
                     <RNPickerSelect
+                      style={{
+                        textAlign: "center",
+                        inputWeb: {
+                          borderRadius: 5,
+                          backgroundColor: "#f0f0f0",
+                          color: "black",
+                        },
+                      }}
                       onValueChange={(value) => setFieldValue(key, value)}
                       placeholder={{ label: "Select Gender", value: "" }}
                       items={[
@@ -132,8 +143,16 @@ const CreatePatientForm = () => {
                     />
                   </View>
                 ) : key === "bloodType" ? (
-                  <View className="flex-1 border border-gray-300 rounded-lg text-lg justify-center">
+                  <View className="flex flex-1 border border-gray-300 rounded-lg text-lg justify-center p-2">
                     <RNPickerSelect
+                      style={{
+                        textAlign: "center",
+                        inputWeb: {
+                          borderRadius: 5,
+                          backgroundColor: "#f0f0f0",
+                          color: "black",
+                        },
+                      }}
                       onValueChange={(value) => setFieldValue(key, value)}
                       placeholder={{ label: "Select Blood Type", value: "" }}
                       items={[

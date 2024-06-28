@@ -40,17 +40,18 @@ const PatientRelativeSchema = Yup.object().shape({
     .max(20, "Relationship must be between 3 and 20 characters long"),
 });
 
-const handleCreation = (token, values) => {
+const handleCreation = (token, values, resetForm) => {
   let patientService = new PatientService(); // PatientService nesnesi oluşturuldu.
   console.log(values);
   console.log(token);
   patientService
     .createRelative(token, values)
     .then((response) => {
-        console.log(response.data);
-        toastMessage("success", response.data);
-        // Yeni doktor eklendikten sonra sayfanın yeniden yüklenmesi için bir işlem yapılabilir.
-        window.location.reload(); // Sayfanın yeniden yüklenmesi
+      console.log(response.data);
+      toastMessage("success", response.data);
+      // Yeni doktor eklendikten sonra sayfanın yeniden yüklenmesi için bir işlem yapılabilir.
+      //window.location.reload(); // Sayfanın yeniden yüklenmesi
+      resetForm();
     })
     .catch((error) => {
       console.log(error.response.data);
@@ -74,7 +75,7 @@ const CreatePatientRelativeForm = () => {
         relationship: "",
       }}
       validationSchema={PatientRelativeSchema}
-      onSubmit={(values) => handleCreation(session, values)}
+      onSubmit={(values, { resetForm }) => handleCreation(session, values, resetForm)}
     >
       {({
         handleChange,

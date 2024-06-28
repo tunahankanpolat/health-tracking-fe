@@ -1,7 +1,7 @@
 import React from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { View, TextInput, Text, Pressable } from "react-native";
+import { View, TextInput, Text, Pressable, ScrollView } from "react-native";
 import toastMessage from "../utils/toastMessage";
 import DoctorService from "../services/doctorService";
 import { useSession } from "../../ctx";
@@ -36,7 +36,7 @@ const DoctorSchema = Yup.object().shape({
   address: Yup.string(),
 });
 
-const handleCreation = (token, values) => {
+const handleCreation = (token, values, resetForm) => {
   let doctorService = new DoctorService();
   /*Object.keys(values).forEach(
     (key) => values[key] === "" && delete values[key]
@@ -48,7 +48,8 @@ const handleCreation = (token, values) => {
     .then((response) => {
       toastMessage("success", response.data);
       // Yeni doktor eklendikten sonra sayfanın yeniden yüklenmesi için bir işlem yapılabilir.
-      window.location.reload(); // Sayfanın yeniden yüklenmesi
+      //window.location.reload(); // Sayfanın yeniden yüklenmesi
+      resetForm();
     })
     .catch((error) => {
       console.log(error.response.data.message);
@@ -60,53 +61,57 @@ const CreateDoctorForm = () => {
   const { isLoading, session } = useSession();
   if (isLoading) return null;
   return (
-    <Formik
-      initialValues={{
-        name: "",
-        surname: "",
-        username: "",
-        password: "",
-        specialization: "",
-        phoneNumber: "",
-        emailAddress: "",
-        address: "",
-      }}
-      validationSchema={DoctorSchema}
-      onSubmit={(values) => handleCreation(session, values)}
-    >
-      {({
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        values,
-        errors,
-        touched,
-      }) => (
-        <View className="p-4 mx-80 android:mx-2 ios:mx-2">
-          {Object.keys(values).map((key) => (
-            <View key={key} className="mb-4">
-              <TextInput
-                onChangeText={handleChange(key)}
-                onBlur={handleBlur(key)}
-                value={values[key]}
-                placeholder={key.charAt(0).toUpperCase() + key.slice(1)}
-                className="border border-gray-300 rounded p-2 text-lg"
-                placeholderTextColor="#9ca3af"
-              />
-              {errors[key] && touched[key] && (
-                <Text className="text-red-500 text-xs mt-1">{errors[key]}</Text>
-              )}
-            </View>
-          ))}
-          <Pressable
-            onPress={handleSubmit}
-            className="bg-primary p-3 rounded-lg items-center"
-          >
-            <Text className="text-white text-lg">Submit</Text>
-          </Pressable>
-        </View>
-      )}
-    </Formik>
+    <ScrollView>
+      <Formik
+        initialValues={{
+          name: "",
+          surname: "",
+          username: "",
+          password: "",
+          specialization: "",
+          phoneNumber: "",
+          emailAddress: "",
+          address: "",
+        }}
+        validationSchema={DoctorSchema}
+        onSubmit={(values, { resetForm }) => handleCreation(session, values, resetForm)}
+      >
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          touched,
+        }) => (
+          <View className="p-4 mx-80 android:mx-2 ios:mx-2">
+            {Object.keys(values).map((key) => (
+              <View key={key} className="mb-4">
+                <TextInput
+                  onChangeText={handleChange(key)}
+                  onBlur={handleBlur(key)}
+                  value={values[key]}
+                  placeholder={key.charAt(0).toUpperCase() + key.slice(1)}
+                  className="border border-gray-300 rounded p-2 text-lg"
+                  placeholderTextColor="#9ca3af"
+                />
+                {errors[key] && touched[key] && (
+                  <Text className="text-red-500 text-xs mt-1">
+                    {errors[key]}
+                  </Text>
+                )}
+              </View>
+            ))}
+            <Pressable
+              onPress={handleSubmit}
+              className="bg-primary p-3 rounded-lg items-center"
+            >
+              <Text className="text-white text-lg">Submit</Text>
+            </Pressable>
+          </View>
+        )}
+      </Formik>
+    </ScrollView>
   );
 };
 

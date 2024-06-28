@@ -1,21 +1,56 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Pressable, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  FlatList,
+} from "react-native";
 import { useSession } from "../../ctx";
+import DoctorService from "../services/doctorService";
+import DrugService from "../services/drugService";
+import CreatePrescriptionModal from "../components/CreatePrescriptionModal";
+import ShowPrescriptionModal from "../components/ShowPrescriptionModal";
+import ShowHealthDataModal from "../components/ShowHealthDataModal";
 import PatientService from "../services/patientService";
+import AwsLambdaService from "../services/awsLambdaService";
 
-const PatientItem = ({ patient }) => {
+const PatientItem = ({ patient, session, drugList }) => {
+  const [createPrescriptionModalVisible, setCreatePrescriptionModalVisible] =
+    useState(false);
+  const [showPrescriptionModalVisible, setShowPrescriptionModalVisible] =
+    useState(false);
+  const [showHealthDataModalVisible, setShowHealthDataModalVisible] =
+    useState(false);
+  const [prescriptions, setPrescriptions] = useState([]);
+  const [healthData, setHealthData] = useState([]);
+
   const handleShowDrugUsage = () => {
     // Delete patient logic
   };
 
-  const handleShowPrescription = () => {
-    // Show prescription logic
+  const handleShowPrescription = async () => {
+    if (prescriptions.length === 0) await getPatientPrescriptions();
+    setShowPrescriptionModalVisible(true);
   };
 
-  const handleShowHealthData = () => {
-    // Show health data logic
+  const handleShowHealthData = async () => {
+    if (healthData.length === 0) await getPatientHealthData();
+    setShowHealthDataModalVisible(true);
   };
 
+  const getPatientHealthData = async () => {
+    const awsLambdaService = new AwsLambdaService();
+    awsLambdaService.getHealthData(patient.id).then((response) => {
+      setHealthData(response.data);
+    });
+  };
+
+  const getPatientPrescriptions = async () => {
+    const patientService = new PatientService();
+    patientService.getPrescriptions(session, patient.id).then((response) => {
+      setPrescriptions(response.data);
+    });
+  };
   return (
     <View className="border border-gray-300 rounded-lg p-4 mb-4 bg-card">
       <Text className="text-lg font-semibold">
@@ -51,16 +86,16 @@ const PatientItem = ({ patient }) => {
 
       <View className="absolute top-0 right-0 mt-2 mr-2">
         <Pressable
-          onPress={handleShowPrescription}
+          onPress={() => handleShowPrescription()}
           className="bg-primary p-2 rounded-lg m-1"
         >
           <Text className="text-white">Show Prescriptions</Text>
         </Pressable>
         <Pressable
-          onPress={handleShowDrugUsage}
+          onPress={() => setCreatePrescriptionModalVisible(true)}
           className="bg-primary p-2 rounded-lg m-1"
         >
-          <Text className="text-white">Show Drug Usage</Text>
+          <Text className="text-white">Create Prescription</Text>
         </Pressable>
         <Pressable
           onPress={handleShowHealthData}
@@ -69,6 +104,24 @@ const PatientItem = ({ patient }) => {
           <Text className="text-white">Show Health Data</Text>
         </Pressable>
       </View>
+      <CreatePrescriptionModal
+        drugList={drugList}
+        setModalVisible={setCreatePrescriptionModalVisible}
+        modalVisible={createPrescriptionModalVisible}
+        patientId={patient.id}
+        session={session}
+        prescriptionList={prescriptions}
+      />
+      <ShowPrescriptionModal
+        setModalVisible={setShowPrescriptionModalVisible}
+        modalVisible={showPrescriptionModalVisible}
+        prescriptions={prescriptions}
+      />
+      <ShowHealthDataModal
+        setModalVisible={setShowHealthDataModalVisible}
+        modalVisible={showHealthDataModalVisible}
+        healthData={healthData}
+      />
     </View>
   );
 };
@@ -79,13 +132,17 @@ const PatientsList = () => {
   const [patients, setPatients] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const patientsPerPage = 10;
+  const [drugList, setDrugList] = useState([]);
 
   useEffect(() => {
-    const patientService = new PatientService();
-    patientService
-      .getAllPatients(session)
+    const drugService = new DrugService();
+    drugService.getAllDrugs().then((response) => {
+      setDrugList(response.data);
+    });
+    const doctorService = new DoctorService();
+    doctorService
+      .getPatients(session)
       .then((response) => {
-        console.log(response.data);
         setPatients(response.data);
       })
       .catch((error) => {
@@ -106,7 +163,9 @@ const PatientsList = () => {
     <FlatList
       data={currentPatients}
       className="px-80 py-2 android:p-2 ios:p-2 rounded-lg"
-      renderItem={({ item }) => <PatientItem patient={item} />}
+      renderItem={({ item }) => (
+        <PatientItem patient={item} session={session} drugList={drugList} />
+      )}
       keyExtractor={(item) => item.id.toString()}
       ListFooterComponent={() => (
         <View className="flex-row justify-center mb-4">

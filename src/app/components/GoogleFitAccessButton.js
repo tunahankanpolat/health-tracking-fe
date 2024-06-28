@@ -14,6 +14,9 @@ export default function GoogleFitAccessButton({
   setIsAuthorized,
   isAuthorized,
   session,
+  setHealthData,
+  setIsHealthDataLoading,
+  patient,
 }) {
   const [request, response, promptAsync] = Google.useAuthRequest({
     scopes: ["https://www.googleapis.com/auth/fitness.heart_rate.read"],
@@ -66,21 +69,25 @@ export default function GoogleFitAccessButton({
     clientId,
     redirectUri
   ) => {
+    
     const awsLambdaService = new AwsLambdaService();
-    try {
-      awsLambdaService.postAuthorizedCode(
-        authorizedCode,
-        userId,
-        scope,
-        state,
-        codeVerifier,
-        platform,
-        clientId,
-        redirectUri
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    setIsHealthDataLoading(true);
+    awsLambdaService.postAuthorizedCode(authorizedCode,
+      userId,
+      scope,
+      state,
+      codeVerifier,
+      platform,
+      clientId,
+      redirectUri).then((response) => {
+        awsLambdaService.getHealthData(patient).then((response) => {
+          setHealthData(response.data);
+          setIsHealthDataLoading(false);
+        });
+      }
+    ).catch((error) => {
+      console.log("Error:", error);
+    });
   };
 
   const getUserIdFromSession = () => {

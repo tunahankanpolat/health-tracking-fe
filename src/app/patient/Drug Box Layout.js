@@ -45,12 +45,15 @@ const MedicineGrid = ({
               }}
               placeholder={{ label: "Select Drug", value: "" }}
               items={drugList.map((drug) => ({
-                key: drug.drugId,
+                key: drug.drugUsageId,
                 label: drug.drugName,
                 value: drug.drugName,
               }))}
             />
           </View>
+          {console.log("drugList:", drugList)}
+          {console.log("index:", index)}
+          {console.log("drugList[index]:", drugList[index])}
           <View className="flex flex-1 flex-col justify-center gap-2">
             {drugList.length > 0 &&
               Array(drugList[index].frequency)

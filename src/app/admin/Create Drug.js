@@ -22,17 +22,15 @@ const DrugSchema = Yup.object().shape({
     .max(10000, "Description must be between 3 and 100 characters long"),
 });
 
-const handleCreation = (token, values) => {
+const handleCreation = (token, values, resetForm) => {
   let drugService = new DrugService();
-  Object.keys(values).forEach(
-    (key) => values[key] === "" && delete values[key]
-  );
   drugService
     .createDrug(token, values)
     .then((response) => {
       toastMessage("success", response.data);
       // Yeni doktor eklendikten sonra sayfanın yeniden yüklenmesi için bir işlem yapılabilir.
-      window.location.reload(); // Sayfanın yeniden yüklenmesi
+      //window.location.reload(); // Sayfanın yeniden yüklenmesi
+      resetForm();
     })
     .catch((error) => {
       console.log(error.response.data.message);
@@ -51,7 +49,7 @@ const CreateDrugForm = () => {
         description: "",
       }}
       validationSchema={DrugSchema}
-      onSubmit={(values) => handleCreation(session.token, values)} // Assuming session contains a token property
+      onSubmit={(values, { resetForm }) => handleCreation(session.token, values, resetForm)}
     >
       {({
         handleChange,

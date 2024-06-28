@@ -10,7 +10,7 @@ import {
 
 export default function ShowPrescriptionModal(props) {
   const { modalVisible, setModalVisible, prescriptions } = props;
-
+  console.log(prescriptions);
   const handleClose = () => {
     setModalVisible(false);
   };

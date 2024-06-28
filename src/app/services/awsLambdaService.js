@@ -1,6 +1,6 @@
 import axios from "axios";
 export default class AwsLambdaService {
-  postAuthorizedCode(
+  async postAuthorizedCode(
     authorizedCode,
     userId,
     scope,
@@ -12,7 +12,7 @@ export default class AwsLambdaService {
   ) {
     console.log("authorizedCode", authorizedCode);
     console.log("userId", userId);
-    return axios.post(
+    return await axios.post(
       process.env.EXPO_PUBLIC_POST_AUTHORIZATION_CODE_URL,
       {
         code: authorizedCode,

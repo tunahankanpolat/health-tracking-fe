@@ -13,4 +13,15 @@ export default class DoctorService {
       },
     });
   }
+  async getDoctor(token, doctorId) {
+    console.log(doctorId);
+    console.log(token);
+    return await axios.get(
+      `${process.env.EXPO_PUBLIC_GET_DOCTOR_URL}/${doctorId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  }
 }
