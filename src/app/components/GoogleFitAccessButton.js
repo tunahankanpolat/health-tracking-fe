@@ -21,11 +21,11 @@ export default function GoogleFitAccessButton({
   const [request, response, promptAsync] = Google.useAuthRequest({
     scopes: ["https://www.googleapis.com/auth/fitness.heart_rate.read"],
     androidClientId:
-      "95257513350-al7els8e4558f626n21rq6ncfcggd20p.apps.googleusercontent.com",
+      "",
     iosClientId:
-      "95257513350-bi9mlkn4cstevc6ls6vpds5la1962n96.apps.googleusercontent.com",
+      "",
     webClientId:
-      "95257513350-h65r6h5g6gpgjlujak87ulldrl3tknjf.apps.googleusercontent.com",
+      "",
     responseType: "code",
     shouldAutoExchangeCode: false,
     prompt: "consent",
